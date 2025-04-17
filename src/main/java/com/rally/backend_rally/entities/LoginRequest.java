@@ -1,22 +1,22 @@
 package com.rally.backend_rally.entities;
 
 public class LoginRequest {
-    private String username;
+    private String alias;
     private String password;
 
     public LoginRequest() {}
 
-    public LoginRequest(String username, String password) {
-        this.username = username;
+    public LoginRequest(String alias, String password) {
+        this.alias = alias;
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
+    public String getAlias() {
+        return alias;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
     public String getPassword() {

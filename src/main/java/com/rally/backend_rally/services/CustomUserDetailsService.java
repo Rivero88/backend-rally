@@ -19,13 +19,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
+    public UserDetails loadUserByUsername(String alias) throws UsernameNotFoundException {
+        User user = userRepository.findByAlias(alias)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        UserBuilder userBuilder = org.springframework.security.core.userdetails.User.withUsername(user.getUsername());
+        UserBuilder userBuilder = org.springframework.security.core.userdetails.User.withUsername(user.getAlias());
         userBuilder.password(user.getPassword());
-        //userBuilder.roles(user.getRole());  // Asumiendo que el role es un campo String en la base de datos
+        //userBuilder.roles(user.getRole());  // Asumiendo que el rol es un campo String en la base de datos
 
         return userBuilder.build();
     }

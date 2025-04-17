@@ -14,15 +14,15 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtUtil {
     
-    public String generateToken(String username) {
+    public String generateToken(String alias) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(alias)
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 día
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public String extractUsername(String token) {
+    public String extractAlias(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
@@ -33,7 +33,7 @@ public class JwtUtil {
 
 
     public boolean validateToken(String token, UserDetails userDetails) {
-        return extractUsername(token).equals(userDetails.getUsername());
+        return extractAlias(token).equals(userDetails.getUsername());
     }
     
     public SecretKey getSigningKey() {

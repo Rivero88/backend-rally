@@ -1,16 +1,20 @@
 package com.rally.backend_rally.entities;
 
+// Clase para los datos que se envían en un login (alias y contraseña)
 public class LoginRequest {
     private String alias;
     private String password;
 
+    // Constructor vacío
     public LoginRequest() {}
 
+    // Constructor con parámetros
     public LoginRequest(String alias, String password) {
         this.alias = alias;
         this.password = password;
     }
 
+    //Getter y Setter
     public String getAlias() {
         return alias;
     }

@@ -1,5 +1,7 @@
 package com.rally.backend_rally.config;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,33 +12,51 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 import com.rally.backend_rally.services.CustomUserDetailsService;
 
 
-@Configuration
-@EnableWebSecurity
+@Configuration // Esta etiqueta marca esta clase como una clase de configuración
+@EnableWebSecurity // Habilita la configuración de seguridad web
 public class SecurityConfig{
 	
+	// Se inyecta el servicio que carga los datos del usuario
 	private final CustomUserDetailsService customUserDetailsService;
 
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
-        this.customUserDetailsService = customUserDetailsService;
-    }
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+	// Constructor para inyectar el servicio
+	public SecurityConfig(CustomUserDetailsService customUserDetailsService,
+	                      JwtAuthenticationFilter jwtAuthenticationFilter) {
+	    this.customUserDetailsService = customUserDetailsService;
+	    this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+	}
+
 	    
+    /**
+     * Configura la cadena de filtros de seguridad (qué rutas se protegen, etc.)
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable())
+        http.cors(withDefaults()) 
+            .csrf(csrf -> csrf.disable()) // Desactiva CSRF porque se usan Tokens
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll()
-                .anyRequest().authenticated()
+                .requestMatchers("/auth/**","/parametros").permitAll()
+                .anyRequest().authenticated() // Requiere autenticación para cualquier otra ruta
             )
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .addFilterBefore(jwtAuthenticationFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
     
+    /**
+     * Configura el AuthenticationManager, que maneja el proceso de autenticación
+     */
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
@@ -46,9 +66,25 @@ public class SecurityConfig{
                    .build();
     }
 
+    /**
+     * Define el codificador de contraseñas: encripta y valida con BCrypt
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+    
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true); // Si necesitas enviar cookies o cabeceras como Authorization
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
   
 }

@@ -15,23 +15,32 @@ import com.rally.backend_rally.entities.LoginRequest;
 import com.rally.backend_rally.enums.Rol;
 import com.rally.backend_rally.services.UserService;
 
-@RestController
+// Endpoint que el frontend usa para autenticarse y recibir un JWT y el rol del usuario
+@RestController // Esta etiqueta nos indica que esto es un Controlador
 @RequestMapping("/auth")
 public class AuthController {
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager; // Manejador de autenticación
     
     @Autowired
-    private JwtUtil jwtUtil;
+    private JwtUtil jwtUtil; // Para generar y validar tokens
     
     @Autowired
-    private UserService userService;
+    private UserService userService; // Servicio para acceder a usuarios y roles
 
+    /**
+     * Endpoint POST para login
+     * Recibe un alias y contraseña, autentica, y devuelve un token y el rol
+     */
     @PostMapping("/login")
     public ResponseEntity<AuthDto> login(@RequestBody LoginRequest request) {
+    	// 1. Autentica las credenciales con Spring Security
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getAlias(), request.getPassword()));
+        // 2. Si no lanza excepción, genera un JWT para ese alias
         String token = jwtUtil.generateToken(request.getAlias());
+        // 3. Obtiene el rol del usuario desde el servicio
         Rol rol = userService.findRolByAlias(request.getAlias());
+        // 4. Devuelve un DTO con el token y el rol del usuario
         return ResponseEntity.ok(new AuthDto(token, rol));
     }
 }

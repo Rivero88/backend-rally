@@ -13,11 +13,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity
-@Table(name = "users")
+@Entity // Etiqueta que nos indica que esto es una entidad JPA
+@Table(name = "users") // Objeto que va a mapear una tabla users en la bbdd
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id // Etiqueta que indica que es una clva primaria
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Se genera automáticamente 
     private Long id;
     
     @Column(nullable = false, unique = true)
@@ -26,7 +26,7 @@ public class User {
    	@Column(nullable = false)
     private String nombre;
     
-    @Column(nullable = false)
+   	@Column(nullable = false)
     private String apellidos;
     
     @Column(nullable = false)
@@ -45,7 +45,23 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Rol rol; // admin, participante
 
-    //GETTER Y SETTER
+    // Getters y Setters
+    public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+    public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+	
 	public String getNombre() {
 			return nombre;
 	}
@@ -54,16 +70,32 @@ public class User {
 		this.nombre = nombre;
 	}
 	
-	public String getAlias() {
-		return alias;
+	public String getApellidos() {
+		return apellidos;
 	}
 
-	public void setAlias(String alias) {
-		this.alias = alias;
+	public void setApellidos(String apellidos) {
+		this.apellidos = apellidos;
 	}
-
+	
 	public String getEmail() {
 		return email;
+	}
+	
+	public LocalDate getfNacimiento() {
+		return fNacimiento;
+	}
+
+	public void setfNacimiento(LocalDate fNacimiento) {
+		this.fNacimiento = fNacimiento;
+	}
+	
+	public Integer getNumTelefono() {
+		return numTelefono;
+	}
+
+	public void setNumTelefono(Integer numTelefono) {
+		this.numTelefono = numTelefono;
 	}
 
 	public void setEmail(String email) {
@@ -84,30 +116,6 @@ public class User {
 
 	public void setRol(Rol rol) {
 		this.rol = rol;
-	}
-
-	public String getApellidos() {
-		return apellidos;
-	}
-
-	public void setApellidos(String apellidos) {
-		this.apellidos = apellidos;
-	}
-
-	public LocalDate getfNacimiento() {
-		return fNacimiento;
-	}
-
-	public void setfNacimiento(LocalDate fNacimiento) {
-		this.fNacimiento = fNacimiento;
-	}
-	
-	public Integer getNumTelefono() {
-		return numTelefono;
-	}
-
-	public void setNumTelefono(Integer numTelefono) {
-		this.numTelefono = numTelefono;
 	}
     
 }

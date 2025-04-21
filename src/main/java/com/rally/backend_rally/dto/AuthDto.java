@@ -9,11 +9,14 @@ public class AuthDto {
 	
 	private Rol rol;
 	
+	private Long idUsuario;
+	
 	// Constructor
-	public AuthDto(String token, Rol rol) {
+	public AuthDto(String token, Rol rol, Long idUsuario) {
 		super();
 		this.token = token;
 		this.rol = rol;
+		this.idUsuario = idUsuario;
 	}
 	
 	// Getter y setter
@@ -29,7 +32,12 @@ public class AuthDto {
 	public void setRol(Rol rol) {
 		this.rol = rol;
 	}
-	
+	public Long getIdUsuario() {
+		return idUsuario;
+	}
+	public void setIdUsuario(Long idUsuario) {
+		this.idUsuario = idUsuario;
+	}
 }
 
  

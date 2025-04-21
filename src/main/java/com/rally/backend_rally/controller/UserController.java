@@ -4,10 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rally.backend_rally.entities.Parametros;
@@ -27,7 +30,42 @@ public class UserController  {
      */
     @GetMapping
     public ResponseEntity<List<User>> obtenerUsuarios() {
-    	List<User> usuario = userService.findAll();// Llama al método findAll del servicio para obtener los usuarios
-        return ResponseEntity.ok(usuario);// Devuelve una respuesta OK + los datos
+    	List<User> usuarios = userService.findAll();// Llama al método findAll del servicio para obtener los usuarios
+        return ResponseEntity.ok(usuarios);// Devuelve una respuesta OK + los datos
     }
+    
+    /**
+     * Endpoint GET para peticion a la base de datos de un usuario
+     */
+    @GetMapping("/{idUsuario}")
+    public ResponseEntity<User> obtenerUsuarioId(@PathVariable Long idUsuario){
+    	User usuario = userService.findUserById(idUsuario);
+    	return ResponseEntity.ok(usuario);
+    }
+    
+    /**
+     * Endpoint DELETE para peticion de borrado a la base de datos de un usuario
+     */
+    @DeleteMapping("/{idUsuario}")
+    public void eliminarUsuario(@PathVariable Long idUsuario) {
+    	userService.deleteUser(idUsuario);
+    }
+    
+    /**
+     * Endpoint PUT para modificar los datos de un usuario
+     */
+    @PutMapping
+    public ResponseEntity<User> editarUsuario(@RequestBody User usuarioEditar){
+    	User usuario = userService.update(usuarioEditar);
+		return ResponseEntity.ok(usuario);
+    }
+    
+    /**
+     * Endpoint PUT para modificar los datos de un usuario
+     */
+    @PutMapping("/modificarContrasenna")
+    public void editarContrasenna(@RequestParam Long idUsuario, String contrasennaNueva) {
+    	userService.updatePassword(idUsuario, contrasennaNueva);
+    }
+    
 }

@@ -27,6 +27,9 @@ public class ParametrosController  {
         return ResponseEntity.ok(parametro);// Devuelve una respuesta OK + los datos
     }
     
+    /**
+     * Endpoint PUT para modificar los datos de los parametros de un rally
+     */
     @PutMapping
     public ResponseEntity<Parametros> editarParametros(@RequestBody Parametros parametroEditar){
     	Parametros parametro = parametrosService.update(parametroEditar);

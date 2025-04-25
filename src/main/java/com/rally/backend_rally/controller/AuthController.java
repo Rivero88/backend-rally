@@ -31,16 +31,16 @@ public class AuthController {
 
     /**
      * Endpoint POST para login
-     * Recibe un alias y contraseña, autentica, y devuelve un token y el rol
+     * Recibe un alias y contraseña, autentica, y devuelve un token, el rol y el id
      */
     @PostMapping("/login")
     public ResponseEntity<AuthDto> login(@RequestBody LoginRequest request) {
     	// 1. Autentica las credenciales con Spring Security
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getAlias(), request.getPassword()));
-        // 2. Si no lanza excepción, genera un JWT para ese alias. Obtiene el rol del usuario desde el servicio
+        // 2. Si no lanza excepción, genera un JWT para ese alias. Obtiene el usuario
         String token = jwtUtil.generateToken(request.getAlias());
         User user = userService.findByAlias(request.getAlias());
-        // 3. Devuelve un DTO con el token y el rol del usuario
+        // 3. Devuelve un DTO con el token, el rol y el id del usuario
         return ResponseEntity.ok(new AuthDto(token, user.getRol(), user.getId()));
     }
 }

@@ -45,7 +45,7 @@ public class SecurityConfig{
         http.cors(withDefaults()) 
             .csrf(csrf -> csrf.disable()) // Desactiva CSRF porque se usan Tokens
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**","/parametros").permitAll()
+                .requestMatchers("/auth/**","/parametros", "/usuarios/registrar").permitAll()
                 .anyRequest().authenticated() // Requiere autenticación para cualquier otra ruta
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

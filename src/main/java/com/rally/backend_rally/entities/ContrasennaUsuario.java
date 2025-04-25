@@ -1,6 +1,6 @@
 package com.rally.backend_rally.entities;
 
-// Clase para los datos que se envían en un login (alias y contraseña)
+// Clase para poder extraer y modificar contraseñas
 public class ContrasennaUsuario {
     private Long idUsuario;
     private String contrasenna;
@@ -29,6 +29,4 @@ public class ContrasennaUsuario {
 	public void setContrasenna(String contrasenna) {
 		this.contrasenna = contrasenna;
 	}
-
-    
 }

@@ -1,12 +1,12 @@
 package com.rally.backend_rally.dto;
 
-public class CategoriasDto  {
+public class CategoriaDto  {
 	private Long id;
     private String nombre;
     private String descripcion;
 	
 	// Constructor
-    public CategoriasDto(Long id, String nombre, String descripcion) {
+    public CategoriaDto(Long id, String nombre, String descripcion) {
 		super();
 		this.id = id;
 		this.nombre = nombre;

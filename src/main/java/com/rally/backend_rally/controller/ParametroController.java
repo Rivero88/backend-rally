@@ -8,22 +8,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rally.backend_rally.entities.Parametros;
-import com.rally.backend_rally.services.ParametrosService;
+import com.rally.backend_rally.entities.Parametro;
+import com.rally.backend_rally.services.ParametroService;
 
 // Endpoint que el frontend usa para obtener los parametros del rally
 @RestController // Esta etiqueta nos indica que esto es un Controlador. Maneja peticiones HTTP y devuelve respuestas JSON
 @RequestMapping("/parametros") // Prefijo para las rutas de este controlador
-public class ParametrosController  {
+public class ParametroController  {
     @Autowired
-    private ParametrosService parametrosService;// Servicio para acceder a los parametros
+    private ParametroService parametrosService;// Servicio para acceder a los parametros
 
     /**
      * Endpoint GET para peticion a la base de datos de los parametros
      */
     @GetMapping
-    public ResponseEntity<Parametros> obtenerParametros() {
-        Parametros parametro = parametrosService.findAll();// Llama al método findAll del servicio para obtener los parámetros
+    public ResponseEntity<Parametro> obtenerParametros() {
+        Parametro parametro = parametrosService.findAll();// Llama al método findAll del servicio para obtener los parámetros
         return ResponseEntity.ok(parametro);// Devuelve una respuesta OK + los datos
     }
     
@@ -31,8 +31,8 @@ public class ParametrosController  {
      * Endpoint PUT para modificar los datos de los parametros de un rally
      */
     @PutMapping
-    public ResponseEntity<Parametros> editarParametros(@RequestBody Parametros parametroEditar){
-    	Parametros parametro = parametrosService.update(parametroEditar);
+    public ResponseEntity<Parametro> editarParametros(@RequestBody Parametro parametroEditar){
+    	Parametro parametro = parametrosService.update(parametroEditar);
 		return ResponseEntity.ok(parametro);
     }
     

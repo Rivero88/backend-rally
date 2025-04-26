@@ -14,7 +14,7 @@ public class LoginRequest {
         this.password = password;
     }
 
-    //Getter y Setter
+    // Getters y Setters
     public String getAlias() {
         return alias;
     }

@@ -1,7 +1,6 @@
 package com.rally.backend_rally.entities;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ import jakarta.persistence.Table;
 
 @Entity // Etiqueta que nos indica que esto es una entidad JPA
 @Table(name = "parametros") // Objeto que va a mapear la tabla parametros en la bbdd
-public class Parametros {
+public class Parametro {
 	
     @Id // Etiqueta que indica que es una clave primaria
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Se genera automáticamente 
@@ -54,10 +53,10 @@ public class Parametros {
     // Relación uno-a-muchos con Categorias
     @OneToMany(mappedBy = "rally", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference // evitar que se produzcan un bucle infinito
-    private List<Categorias> categorias = new ArrayList<>();  
+    private List<Categoria> categorias = new ArrayList<>();  
     
     //Constructor vacío
-    public Parametros() {
+    public Parametro() {
 		super();
 	}
 
@@ -126,11 +125,11 @@ public class Parametros {
 		this.fGanador = fGanador;
 	}
 
-	public List<Categorias> getCategorias() {
+	public List<Categoria> getCategorias() {
 		return categorias;
 	}
 
-	public void setCategorias(List<Categorias> categorias) {
+	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
 	}
 }

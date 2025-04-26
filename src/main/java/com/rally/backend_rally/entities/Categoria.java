@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 //Clase para los datos de las categorias del Rally
 @Entity // Etiqueta que nos indica que esto es una entidad JPA
 @Table(name = "categorias") // Objeto que va a mapear la tabla categorias en la bbdd
-public class Categorias {
+public class Categoria {
 	
 	@Id // Etiqueta que indica que es una clave primaria
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Se genera automáticamente 
@@ -29,7 +29,7 @@ public class Categorias {
 	@ManyToOne
     @JoinColumn(name = "rally_id", nullable = false) // Clave foránea
 	@JsonBackReference // evitar que se produzcan un bucle infinito
-    private Parametros rally;
+    private Parametro rally;
 	
 	// Getters y Setters
 	public Long getId() {
@@ -56,11 +56,11 @@ public class Categorias {
 		this.descripcion = descripcion;
 	}
 
-	public Parametros getRally() {
+	public Parametro getRally() {
 		return rally;
 	}
 
-	public void setRally(Parametros rally) {
+	public void setRally(Parametro rally) {
 		this.rally = rally;
 	}
 }

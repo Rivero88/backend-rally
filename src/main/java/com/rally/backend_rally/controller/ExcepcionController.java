@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestControllerAdvice
-public class ExcepcionesController  {
+public class ExcepcionController  {
    
 	// Para manejar específicamente ResponseStatusException
     @ExceptionHandler(ResponseStatusException.class)

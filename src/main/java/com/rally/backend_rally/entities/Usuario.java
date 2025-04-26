@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 
 @Entity // Etiqueta que nos indica que esto es una entidad JPA
 @Table(name = "users") // Objeto que va a mapear una tabla users en la bbdd
-public class User {
+public class Usuario {
     @Id // Etiqueta que indica que es una clave primaria
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Se genera automáticamente 
     private Long id;

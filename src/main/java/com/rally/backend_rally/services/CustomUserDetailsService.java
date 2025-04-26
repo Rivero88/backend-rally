@@ -1,26 +1,26 @@
 package com.rally.backend_rally.services;
 
-import com.rally.backend_rally.entities.User;
-import com.rally.backend_rally.repositories.UserRepository;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.User.UserBuilder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
+import com.rally.backend_rally.entities.Usuario;
+import com.rally.backend_rally.repositories.UsuarioRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public CustomUserDetailsService(UsuarioRepository userRepository) {
+        this.usuarioRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String alias) throws UsernameNotFoundException {
-        User user = userRepository.findByAlias(alias)
+    	Usuario user = usuarioRepository.findByAlias(alias)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         UserBuilder userBuilder = org.springframework.security.core.userdetails.User.withUsername(user.getAlias());

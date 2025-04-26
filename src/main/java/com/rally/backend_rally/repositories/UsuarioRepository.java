@@ -1,20 +1,21 @@
 package com.rally.backend_rally.repositories;
 
 
-import com.rally.backend_rally.entities.User;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import com.rally.backend_rally.entities.Usuario;
 
 @Repository // Esta etiqueta indica que es un repositorio para la entidad User
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
 	/**
 	 * Query Methods para generar las consultas automáticamente
 	 */
 	// Busca un usuario por su alias. Retorna un Optional<User> por si no se encuentra.
-    Optional<User> findByAlias(String alias);
+    Optional<Usuario> findByAlias(String alias);
     // Busca un usuario por su email.
-    Optional<User> findByEmail(String email);
+    Optional<Usuario> findByEmail(String email);
 }

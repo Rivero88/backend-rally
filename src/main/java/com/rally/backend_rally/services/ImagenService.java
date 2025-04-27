@@ -1,11 +1,13 @@
 package com.rally.backend_rally.services;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -13,6 +15,11 @@ import com.rally.backend_rally.entities.Categoria;
 import com.rally.backend_rally.entities.Imagen;
 import com.rally.backend_rally.entities.ImagenRequest;
 import com.rally.backend_rally.entities.Usuario;
+import com.rally.backend_rally.excepciones.CategoriaNoEncontradaException;
+import com.rally.backend_rally.excepciones.UsuarioNoEncontradoException;
+import com.rally.backend_rally.excepciones.ValidarFormatoException;
+import com.rally.backend_rally.excepciones.ValidarTamannoException;
+import com.rally.backend_rally.excepciones.ValidarVacioException;
 import com.rally.backend_rally.repositories.CategoriaRepository;
 import com.rally.backend_rally.repositories.ImagenRepository;
 import com.rally.backend_rally.repositories.UsuarioRepository;
@@ -30,22 +37,23 @@ public class ImagenService {
 	@Value("${ruta.fotografias}")
 	private String rutaGlobal;
 	
-	public Imagen guardarImagen(ImagenRequest imagenRequest) throws IOException {
+	@Transactional
+	public Imagen guardarImagen(ImagenRequest imagenRequest) {
         MultipartFile archivo = imagenRequest.getFile();
 
         if (archivo.isEmpty()) {
-           throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"El archivo está vacío.");
+           throw new ValidarVacioException();
         }
 
         // Validar tamaño (2MB máximo)
         if (archivo.getSize() > 2 * 1024 * 1024) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"El tamaño máximo permitido es de 2MB.");
+            throw new ValidarTamannoException();
         }
 
         // Validar formato
         String tipo = archivo.getContentType();
         if (tipo == null || (!tipo.equals("image/jpeg") && !tipo.equals("image/png") && !tipo.equals("image/jpg"))) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Formato de imagen no permitido (solo JPG o JPEG o PNG).");
+            throw new ValidarFormatoException();
         }
 
         Imagen imagen = new Imagen();
@@ -58,12 +66,12 @@ public class ImagenService {
         
         // Set Categoria
         Categoria categoria = categoriaRepository.findById(imagenRequest.getCategoriaId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Categoría no encontrada."));
+                .orElseThrow(() -> new CategoriaNoEncontradaException());
         imagen.setCategorias(categoria);
 
         // Set Usuario
         Usuario usuario = usuarioRepository.findById(imagenRequest.getUsuarioId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Usuario no encontrado."));
+                .orElseThrow(() -> new UsuarioNoEncontradoException());
         imagen.setUsuario(usuario);
         
         // Guarda la imagen en la bbdd
@@ -85,8 +93,13 @@ public class ImagenService {
         Imagen imagenGuardadaFinal = imagenRepository.save(imagenGuardada);
         
         java.nio.file.Path path = java.nio.file.Paths.get(uploadDir + "/" + nombreArchivo);
-        archivo.transferTo(path.toFile());  
-        
+        try {
+			archivo.transferTo(path.toFile());
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}  
         return imagenGuardadaFinal;
     }
 
@@ -99,4 +112,8 @@ public class ImagenService {
         }
 		return "." + extension;
 	}
+	
+	public List<Long> obtenerCategoriasConFoto(Long usuarioId) {
+        return imagenRepository.findCategoriasConFotoByUsuario(usuarioId);
+    }
 }

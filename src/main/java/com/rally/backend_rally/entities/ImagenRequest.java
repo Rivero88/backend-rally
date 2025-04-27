@@ -2,6 +2,7 @@ package com.rally.backend_rally.entities;
 
 import org.springframework.web.multipart.MultipartFile;
 
+// 
 public class ImagenRequest {
 	private String nombre;
     private String descripcion;

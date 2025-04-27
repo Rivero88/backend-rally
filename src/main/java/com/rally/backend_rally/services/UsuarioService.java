@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.rally.backend_rally.Util;
 import com.rally.backend_rally.entities.Usuario;
 import com.rally.backend_rally.enums.Rol;
+import com.rally.backend_rally.excepciones.ValidarAliasException;
 import com.rally.backend_rally.repositories.UsuarioRepository;
 
 @Service
@@ -89,7 +90,7 @@ public class UsuarioService {
 	public Usuario nuevoUsuario(Usuario usuarioNuevo) {
 		Optional<Usuario> userOptional = userRepository.findByAlias(usuarioNuevo.getAlias());
 		if(userOptional.isPresent()) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,("Usuario ya registrado con el Alias indicado."));
+			throw new ValidarAliasException();
 		}
 		usuarioNuevo.setRol(Rol.participante);
 		String contrasennaEncriptada = Util.encriptarPassword(usuarioNuevo.getPassword());

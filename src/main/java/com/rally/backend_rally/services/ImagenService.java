@@ -116,4 +116,13 @@ public class ImagenService {
 	public List<Long> obtenerCategoriasConFoto(Long usuarioId) {
         return imagenRepository.findCategoriasConFotoByUsuario(usuarioId);
     }
+	
+	public List<Imagen> obtenerImagenesUsuario(Long usuarioId){
+		return imagenRepository.findByUsuarioId(usuarioId);
+	}
+	
+	@Transactional
+	public void borrarImagen(Long imagenId) {
+		imagenRepository.deleteById(imagenId);
+	}
 }

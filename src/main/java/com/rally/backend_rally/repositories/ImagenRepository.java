@@ -15,4 +15,6 @@ public interface ImagenRepository extends JpaRepository<Imagen, Long> {
 	
 	@Query("SELECT DISTINCT i.categorias.id FROM Imagen i WHERE i.usuario.id = :usuarioId")
 	List<Long> findCategoriasConFotoByUsuario(@Param("usuarioId") Long usuarioId);
+
+	List<Imagen> findByUsuarioId(Long usuarioId); 
 }

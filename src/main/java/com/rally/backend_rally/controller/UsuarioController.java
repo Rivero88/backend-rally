@@ -36,6 +36,16 @@ public class UsuarioController  {
         return ResponseEntity.ok(usuarios);
     }
     
+    /**
+	 * Endpoint DELETE para petición de borrado a la base de datos de un usuario
+	 * Llama al método deleteUser del servicio para borrar un usuario por su id
+	 * @param idUsuario
+	 */
+    @DeleteMapping("/{idUsuario}")
+    public void eliminarUsuario(@PathVariable Long idUsuario) {
+    	userService.deleteUser(idUsuario);
+    }
+    
 	/**
 	 * Endpoint GET para petición a la base de datos de un usuario.
 	 * Llama al método findUserById del servicio para obtener un usuario por su id
@@ -47,17 +57,7 @@ public class UsuarioController  {
     	Usuario usuario = userService.findUserById(idUsuario);
     	return ResponseEntity.ok(usuario);
     }
-    
-	/**
-	 * Endpoint DELETE para petición de borrado a la base de datos de un usuario
-	 * Llama al método deleteUser del servicio para borrar un usuario por su id
-	 * @param idUsuario
-	 */
-    @DeleteMapping("/{idUsuario}")
-    public void eliminarUsuario(@PathVariable Long idUsuario) {
-    	userService.deleteUser(idUsuario);
-    }
-    
+     
 	/**
 	 * Endpoint PUT para modificar los datos de un usuario en la base de datos
 	 * Llama al método update del servicio para modificar un usuario

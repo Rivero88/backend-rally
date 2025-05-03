@@ -3,6 +3,7 @@ package com.rally.backend_rally.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rally.backend_rally.entities.Imagen;
 import com.rally.backend_rally.entities.ImagenRequest;
-import com.rally.backend_rally.excepciones.ValidarFormatoException;
 import com.rally.backend_rally.services.ImagenService;
 
 @RestController
@@ -25,32 +25,22 @@ public class ImagenController {
 	
     @Autowired
     private ImagenService imagenService;
-
+    
     /**
      *  Endpoint POST para cargar imagenes.
      * @param imagenRequest
-     * @return
+     * @return  respuesta OK + los datos
      */
     @PostMapping("/cargar")
     public ResponseEntity<?> cargarImagen(@ModelAttribute ImagenRequest imagenRequest){
     	Imagen imagenGuardada = imagenService.guardarImagen(imagenRequest);
         return ResponseEntity.ok(imagenGuardada);
     }
-    
-    /**
-     * Endpoint GET para sacar las categorias de fotografías ocupadas por id de usuario.
-     * @param usuarioId
-     * @return
-     */
-    @GetMapping("/cargar/categorias_ocupadas/{usuarioId}")
-    public List<Long> obtenerCategoriasConFoto(@PathVariable Long usuarioId) {
-    	return imagenService.obtenerCategoriasConFoto(usuarioId);
-    }
-    
+        
     /**
      * Endpoint GET para obtener las imagenes de un usuario por un id.
      * @param usuarioId
-     * @return
+     * @return lista de imagenes de usuario
      */
     @GetMapping("/listar/{usuarioId}")
     public List<Imagen> obtenerImagenesUsuario(@PathVariable Long usuarioId){
@@ -64,5 +54,20 @@ public class ImagenController {
     @DeleteMapping("/{imagenId}")
     public void eliminarImagen(@PathVariable Long imagenId) {
     	imagenService.borrarImagen(imagenId);
+    }
+    
+    /**
+     * Endpoint GET para obtener las imagenes de un usuario por un id y poder visualizarlas.
+     * @param usuarioId
+     * @return una imagen
+     */
+    @GetMapping("/obtenerImagen/{imagenId}")
+    public ResponseEntity<byte[]> obtenerImagenParaModal(@PathVariable Long imagenId){
+    	return imagenService.obtenerImagenVer(imagenId);
+    }
+    
+    @GetMapping("/listar")
+    public List<Imagen> listarTodasImagenes(){
+    	return imagenService.listarTodasImagenes();
     }
 }

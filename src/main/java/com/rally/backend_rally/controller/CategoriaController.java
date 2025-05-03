@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,5 +30,16 @@ public class CategoriaController  {
     	List<Categoria> categorias = categoriasService.findAll();
         return ResponseEntity.ok(categorias);
     } 
+    
+    /**
+     * Endpoint GET para sacar las categorias de fotografías ocupadas por id de usuario.
+     * Llama al método obtenerCategoriasConFoto del servicio para obtener las categorias que ya tienen foto cargada
+     * @param usuarioId
+     * @return
+     */
+    @GetMapping("/cargar/categorias_ocupadas/{usuarioId}")
+    public List<Long> obtenerCategoriasConFoto(@PathVariable Long usuarioId) {
+    	return categoriasService.obtenerCategoriasConFoto(usuarioId);
+    }
     
 }

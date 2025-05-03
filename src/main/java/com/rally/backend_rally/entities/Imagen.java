@@ -1,5 +1,9 @@
 package com.rally.backend_rally.entities;
 
+import java.time.LocalDate;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,8 +13,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-@Entity
-@Table(name = "imagenes")
+//Clase para las imagenes del Rally
+@Entity // Etiqueta que nos indica que esto es una entidad JPA
+@Table(name = "imagenes") // Objeto que va a mapear la tabla categorias en la bbdd
 public class Imagen {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,11 +39,15 @@ public class Imagen {
     @Column(nullable = false)
     private String estadoValidacion = "Pendiente";
     
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDate fechaSubida;
+    
     private String url;
     
     @ManyToOne
     @JoinColumn(name = "categoria_id")
-    private Categoria categorias; 
+    private Categoria categoria; 
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
@@ -110,12 +119,12 @@ public class Imagen {
 		this.url = url;
 	}
 
-	public Categoria getCategorias() {
-		return categorias;
+	public Categoria getCategoria() {
+		return categoria;
 	}
 
-	public void setCategorias(Categoria categorias) {
-		this.categorias = categorias;
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 
 	public Usuario getUsuario() {
@@ -124,6 +133,14 @@ public class Imagen {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public LocalDate getFechaSubida() {
+		return fechaSubida;
+	}
+
+	public void setFechaSubida(LocalDate fechaSubida) {
+		this.fechaSubida = fechaSubida;
 	}
     
 }

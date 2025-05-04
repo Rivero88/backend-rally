@@ -199,9 +199,44 @@ public class ImagenService {
         }
     }
 
-	
+	/**
+	 * Método para listar todas las fotografías
+	 * @return
+	 */
 	public List<Imagen> listarTodasImagenes() {
 		return imagenRepository.findAll();
+	}
+	
+	/**
+	 * Método para pasar a estado validado una fotografía
+	 * @param imagenId
+	 * @return
+	 */
+	public Imagen validarImagen(Long imagenId) {
+		Imagen imagen = new Imagen();
+		String nuevoEstado = "Validada";
+		Optional<Imagen> imagenOptional = imagenRepository.findById(imagenId);
+		if (imagenOptional.isPresent()) {
+			imagen = imagenOptional.get();
+			imagen.setEstadoValidacion(nuevoEstado);	
+		}
+		return imagenRepository.save(imagen);
+	}
+	
+	/**
+	 * Método para pasar a estado rechazada una fotografía
+	 * @param imagenId
+	 * @return
+	 */
+	public Imagen rechazarImagen(Long imagenId) {
+		Imagen imagen = new Imagen();
+		String nuevoEstado = "Rechazada";
+		Optional<Imagen> imagenOptional = imagenRepository.findById(imagenId);
+		if (imagenOptional.isPresent()) {
+			imagen = imagenOptional.get();
+			imagen.setEstadoValidacion(nuevoEstado);	
+		}
+		return imagenRepository.save(imagen);
 	}
 	
 	/**

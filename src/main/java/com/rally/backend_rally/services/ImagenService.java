@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.rally.backend_rally.entities.Categoria;
 import com.rally.backend_rally.entities.Imagen;
 import com.rally.backend_rally.entities.ImagenRequest;
+import com.rally.backend_rally.entities.Parametro;
 import com.rally.backend_rally.entities.Usuario;
 import com.rally.backend_rally.excepciones.CategoriaNoEncontradaException;
 import com.rally.backend_rally.excepciones.UsuarioNoEncontradoException;
@@ -45,9 +46,8 @@ public class ImagenService {
 	private String rutaGlobal;
 
 	/**
-	 * Método para guarda la imagen seleccionada por el usuario.
-	 * Se guarda en una carpeta con el nombre del id del usuario.
-	 * Dentro tiene una carpeta con el id de la categoría.
+	 * Método para guardar la imagen seleccionada por el usuario.
+	 * Se guarda en una carpeta con el nombre del id del usuario. Dentro tiene una carpeta con el id de la categoría.
 	 * Dentro se encuentra la imagen con el nombre: idImagen.
 	 * Es transaccional para que se haga todo a la vez (guardado en bbdd y en carpetas) y si no que no se haga nada.
 	 * @param imagenRequest
@@ -238,6 +238,42 @@ public class ImagenService {
 		}
 		return imagenRepository.save(imagen);
 	}
+	
+	/**
+	 * Metodo para seleccionar una imagen
+	 * @param imagenId
+	 * @return
+	 */
+	public Optional<Imagen> seleccionarImagen(Long imagenId) {
+		return imagenRepository.findById(imagenId);
+	}
+	
+	/**
+	 * 
+	 * @param imagenEditar
+	 * @return
+	 */
+	public Imagen actualizarImagen(Imagen imagenEditar) {
+		Imagen imagen = new Imagen();
+		Optional<Imagen> imagenOptional = imagenRepository.findById(imagenEditar.getId());
+		if(imagenOptional.isPresent()) {
+			imagen = imagenOptional.get();
+			imagen.setNombre(imagenEditar.getNombre());
+			imagen.setDescripcion(imagenEditar.getDescripcion());
+		}
+		return imagenRepository.save(imagen);
+	}
+	
+	public Imagen votarImagen(Long imagenId) {
+		Imagen imagen = new Imagen();
+		Optional<Imagen> imagenOptional = imagenRepository.findById(imagenId);
+		if(imagenOptional.isPresent()) {
+			imagen = imagenOptional.get();
+			imagen.setVotos(imagen.getVotos() + 1);;	
+		}
+		return imagenRepository.save(imagen);
+	}
+	
 	
 	/**
 	 * Método para obtener la extension de la imagen que se quiere cargar

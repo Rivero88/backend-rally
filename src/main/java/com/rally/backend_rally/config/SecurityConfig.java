@@ -45,7 +45,7 @@ public class SecurityConfig{
         http.cors(withDefaults()) 
             .csrf(csrf -> csrf.disable()) // Desactiva CSRF porque se usan Tokens
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**","/parametros", "/usuarios/registrar", "/imagenes/listar", "/imagenes/obtenerImagen/**" ).permitAll()
+                .requestMatchers("/auth/**","/parametros", "/usuarios/registrar", "/imagenes/listar", "/imagenes/obtenerImagen/**", "/imagenes/votar/**" ).permitAll()
                 .anyRequest().authenticated() // Requiere autenticación para cualquier otra ruta
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -78,7 +78,7 @@ public class SecurityConfig{
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:4200"));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true); // Si necesitas enviar cookies o cabeceras como Authorization
 

@@ -1,6 +1,7 @@
 package com.rally.backend_rally.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,14 +9,17 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rally.backend_rally.entities.Imagen;
 import com.rally.backend_rally.entities.ImagenRequest;
+import com.rally.backend_rally.entities.Parametro;
 import com.rally.backend_rally.services.ImagenService;
 
 @RestController
@@ -57,7 +61,7 @@ public class ImagenController {
     }
     
     /**
-     * Endpoint GET para obtener las imagenes de un usuario por un id y poder visualizarlas.
+     * Endpoint GET para obtener las imagenes de un usuario por un id y poder visualizarlas en el modal.
      * @param usuarioId
      * @return una imagen
      */
@@ -66,19 +70,61 @@ public class ImagenController {
     	return imagenService.obtenerImagenVer(imagenId);
     }
     
+    /**
+     * Endpoint GET para obtener una imagen por su id.
+     * @param imagenId
+     * @return
+     */
+    @GetMapping("/seleccionar/{imagenId}")
+    public Optional<Imagen> seleccionarImagen(@PathVariable Long imagenId){
+    	return imagenService.seleccionarImagen(imagenId);
+    }
+    
+    /**
+     * Endpoint GET para obtener todas las imagenes.
+     * @return
+     */
     @GetMapping("/listar")
     public List<Imagen> listarTodasImagenes(){
     	return imagenService.listarTodasImagenes();
     }
     
-    @PutMapping("/validar/{imagenId}")
+    /**
+     * Endpoint PATCH para cambiar estado a validado.
+     * @param imagenId
+     * @return
+     */
+    @PatchMapping("/validar/{imagenId}")
     public Imagen validarImagen(@PathVariable Long imagenId) {
     	return imagenService.validarImagen(imagenId);
     }
     
-    @PutMapping("/rechazar/{imagenId}")
+    /**
+     * Endpoint PATCH para cambiar estado a rechazado.
+     * @param imagenId
+     * @return
+     */
+    @PatchMapping("/rechazar/{imagenId}")
     public Imagen rechazarImagen(@PathVariable Long imagenId) {
     	return imagenService.rechazarImagen(imagenId);
     }
+    
+    /**
+     * Endpoint PUT para modificar una imagen.
+     * @param imagenEditar
+     * @return
+     */
+    @PutMapping
+    public Imagen editarImagen(@RequestBody Imagen imagenEditar){
+    	Imagen imagen = imagenService.actualizarImagen(imagenEditar);
+		return imagen;
+    } 
+    
+    @PatchMapping("/votar/{imagenId}")
+    public Imagen votarImagen (@PathVariable Long imagenId) {
+    	 return imagenService.votarImagen(imagenId);
+    }
+    
+    
     
 }

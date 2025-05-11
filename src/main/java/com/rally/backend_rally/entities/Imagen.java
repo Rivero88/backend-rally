@@ -1,9 +1,14 @@
 package com.rally.backend_rally.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +16,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 //Clase para las imagenes del Rally
 @Entity // Etiqueta que nos indica que esto es una entidad JPA
@@ -34,9 +41,6 @@ public class Imagen {
     private Long tamanno;
     
     @Column(nullable = false)
-    private int votos = 0;
-    
-    @Column(nullable = false)
     private String estadoValidacion = "Pendiente";
     
     @CreationTimestamp
@@ -53,6 +57,14 @@ public class Imagen {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
+    @OneToMany(mappedBy = "imagen", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Voto> votos = new ArrayList<>(); 
+    
+    @Transient
+    public Integer getVotosImagen() {
+    	return this.getVotos().size();
+    }
     
     // Getters y Setters
 	public Long getId() {
@@ -95,14 +107,6 @@ public class Imagen {
 		this.tamanno = tamanno;
 	}
 
-	public int getVotos() {
-		return votos;
-	}
-
-	public void setVotos(int votos) {
-		this.votos = votos;
-	}
-
 	public String getEstadoValidacion() {
 		return estadoValidacion;
 	}
@@ -141,6 +145,16 @@ public class Imagen {
 
 	public void setFechaSubida(LocalDate fechaSubida) {
 		this.fechaSubida = fechaSubida;
+	}
+
+
+	public List<Voto> getVotos() {
+		return votos;
+	}
+
+
+	public void setVotos(List<Voto> votos) {
+		this.votos = votos;
 	}
     
 }

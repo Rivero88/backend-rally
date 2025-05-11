@@ -6,8 +6,10 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,10 +20,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.rally.backend_rally.dto.ImagenRankingDto;
 import com.rally.backend_rally.entities.Categoria;
 import com.rally.backend_rally.entities.Imagen;
 import com.rally.backend_rally.entities.ImagenRequest;
-import com.rally.backend_rally.entities.Parametro;
 import com.rally.backend_rally.entities.Usuario;
 import com.rally.backend_rally.excepciones.CategoriaNoEncontradaException;
 import com.rally.backend_rally.excepciones.UsuarioNoEncontradoException;
@@ -31,6 +33,7 @@ import com.rally.backend_rally.excepciones.ValidarVacioException;
 import com.rally.backend_rally.repositories.CategoriaRepository;
 import com.rally.backend_rally.repositories.ImagenRepository;
 import com.rally.backend_rally.repositories.UsuarioRepository;
+import com.rally.backend_rally.repositories.VotoRepository;
 
 @Service
 public class ImagenService {
@@ -41,6 +44,8 @@ public class ImagenService {
 	private CategoriaRepository categoriaRepository;
 	@Autowired
 	private ImagenRepository imagenRepository;
+	@Autowired
+	private VotoRepository votoRepository;
 
 	@Value("${ruta.fotografias}")
 	private String rutaGlobal;
@@ -51,7 +56,7 @@ public class ImagenService {
 	 * Dentro se encuentra la imagen con el nombre: idImagen.
 	 * Es transaccional para que se haga todo a la vez (guardado en bbdd y en carpetas) y si no que no se haga nada.
 	 * @param imagenRequest
-	 * @return
+	 * @return una imagen
 	 */
 	@Transactional
 	public Imagen guardarImagen(ImagenRequest imagenRequest) {
@@ -79,7 +84,6 @@ public class ImagenService {
 		imagen.setDescripcion(imagenRequest.getDescripcion());
 		imagen.setFormato(tipo);
 		imagen.setTamanno(archivo.getSize());
-		imagen.setVotos(0);
 		imagen.setEstadoValidacion("Pendiente");
 		Categoria categoria = categoriaRepository.findById(imagenRequest.getCategoriaId())
 				.orElseThrow(() -> new CategoriaNoEncontradaException());
@@ -119,9 +123,9 @@ public class ImagenService {
 	}
 
 	/**
-	 * Método para ejecutar la consulta que traerá todas las imagenenes del usuario
+	 * Método para ejecutar la consulta que traerá todas las imagenes del usuario
 	 * @param usuarioId
-	 * @return
+	 * @return lista de imagenes
 	 */
 	public List<Imagen> obtenerImagenesUsuario(Long usuarioId) {
 		return imagenRepository.findByUsuarioId(usuarioId);
@@ -129,7 +133,7 @@ public class ImagenService {
 
 	/**
 	 * Método para borrar una imagen de la base de datos y de la carpeta contenedora.
-	 * Se borrarán también las carpetas.
+	 * Se borrarán también las carpetas si están vacías.
 	 * @param imagenId
 	 */
 	@Transactional
@@ -167,8 +171,7 @@ public class ImagenService {
 	}
 	
 	/**
-	 * Método para ejecutar la consulta que guardará la imagen en formato byte para devolverla al front
-	 * y mostrarla en el front
+	 * Método para ejecutar la consulta que guardará la imagen en formato byte para mostrarla en el front
 	 * @param imagenId
 	 * @return
 	 */
@@ -244,12 +247,17 @@ public class ImagenService {
 	 * @param imagenId
 	 * @return
 	 */
-	public Optional<Imagen> seleccionarImagen(Long imagenId) {
-		return imagenRepository.findById(imagenId);
+	public Imagen seleccionarImagen(Long imagenId) {
+		Imagen imagen = new Imagen();
+		Optional<Imagen> imagenOptional = imagenRepository.findById(imagenId);
+		if(imagenOptional.isPresent()) {
+			imagen = imagenOptional.get();
+		}
+		return imagen;
 	}
 	
 	/**
-	 * 
+	 * Método para modificar nombre y/o descripción de una imagen
 	 * @param imagenEditar
 	 * @return
 	 */
@@ -264,16 +272,30 @@ public class ImagenService {
 		return imagenRepository.save(imagen);
 	}
 	
-	public Imagen votarImagen(Long imagenId) {
-		Imagen imagen = new Imagen();
-		Optional<Imagen> imagenOptional = imagenRepository.findById(imagenId);
-		if(imagenOptional.isPresent()) {
-			imagen = imagenOptional.get();
-			imagen.setVotos(imagen.getVotos() + 1);;	
-		}
-		return imagenRepository.save(imagen);
+	/**
+	 * Método para obtener el ranking de las imágenes validadas ordenadas en orden descendente
+	 * @return
+	 */
+	public List<ImagenRankingDto> obtenerRankingImagenes() {
+	    List<Imagen> imagenesValidadas = imagenRepository.findByEstadoValidacion("Validada");
+	    // Transforma cada imagen en un DTO con la cantidad de votos
+	    List<ImagenRankingDto> ranking = imagenesValidadas.stream()
+	        .map(imagen -> {
+	            Long id = imagen.getId();
+	            String nombre = imagen.getNombre();
+	            String categoria = imagen.getCategoria().getNombre();
+	            String autor = imagen.getUsuario().getNombre() + " " + imagen.getUsuario().getApellidos();
+	            int votos = votoRepository.countByImagen(imagen);
+
+	            return new ImagenRankingDto(id, nombre, categoria, autor, votos);
+	        })
+	        // Ordena por cantidad de votos descendente
+	        .sorted(Comparator.comparingInt(ImagenRankingDto::getVotos).reversed())
+	        .collect(Collectors.toList());
+
+	    return ranking;
 	}
-	
+
 	
 	/**
 	 * Método para obtener la extension de la imagen que se quiere cargar

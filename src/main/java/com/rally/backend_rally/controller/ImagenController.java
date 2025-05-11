@@ -1,7 +1,6 @@
 package com.rally.backend_rally.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rally.backend_rally.dto.ImagenRankingDto;
 import com.rally.backend_rally.entities.Imagen;
 import com.rally.backend_rally.entities.ImagenRequest;
-import com.rally.backend_rally.entities.Parametro;
 import com.rally.backend_rally.services.ImagenService;
 
 @RestController
 @RequestMapping("/imagenes")
-@CrossOrigin(origins = "*") // Permitir Angular local dev
+@CrossOrigin(origins = "*")
 public class ImagenController {
 	
     @Autowired
@@ -63,7 +62,7 @@ public class ImagenController {
     /**
      * Endpoint GET para obtener las imagenes de un usuario por un id y poder visualizarlas en el modal.
      * @param usuarioId
-     * @return una imagen
+     * @return una imagen en formato byte
      */
     @GetMapping("/obtenerImagen/{imagenId}")
     public ResponseEntity<byte[]> obtenerImagenParaModal(@PathVariable Long imagenId){
@@ -73,16 +72,16 @@ public class ImagenController {
     /**
      * Endpoint GET para obtener una imagen por su id.
      * @param imagenId
-     * @return
+     * @return una imagen
      */
     @GetMapping("/seleccionar/{imagenId}")
-    public Optional<Imagen> seleccionarImagen(@PathVariable Long imagenId){
+    public Imagen seleccionarImagen(@PathVariable Long imagenId){
     	return imagenService.seleccionarImagen(imagenId);
     }
     
     /**
      * Endpoint GET para obtener todas las imagenes.
-     * @return
+     * @return una lista de imagenes
      */
     @GetMapping("/listar")
     public List<Imagen> listarTodasImagenes(){
@@ -120,11 +119,12 @@ public class ImagenController {
 		return imagen;
     } 
     
-    @PatchMapping("/votar/{imagenId}")
-    public Imagen votarImagen (@PathVariable Long imagenId) {
-    	 return imagenService.votarImagen(imagenId);
+    /**
+     * Endpoint GET para obtener un ranking de imagenes segun los votos, sólo de las fotos validadas.
+     * @return
+     */
+    @GetMapping("/ranking")
+    public ResponseEntity<List<ImagenRankingDto>> obtenerRanking() {
+        return ResponseEntity.ok(imagenService.obtenerRankingImagenes());
     }
-    
-    
-    
 }

@@ -16,5 +16,12 @@ public interface ImagenRepository extends JpaRepository<Imagen, Long> {
 	 * @param usuarioId
 	 * @return
 	 */
-	List<Imagen> findByUsuarioId(Long usuarioId); 
+	List<Imagen> findByUsuarioId(Long usuarioId);
+
+	/**
+	 * Consulta para traer las imagenes con un estado determinado
+	 * @param string
+	 * @return
+	 */
+	List<Imagen> findByEstadoValidacion(String string); 
 }

@@ -14,7 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity // Etiqueta que nos indica que esto es una entidad JPA
-@Table(name = "users") // Objeto que va a mapear una tabla users en la bbdd
+@Table(name = "usuarios")
 public class Usuario {
     @Id // Etiqueta que indica que es una clave primaria
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Se genera automáticamente 
@@ -29,10 +29,10 @@ public class Usuario {
    	@Column(nullable = false)
     private String apellidos;
     
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDate fNacimiento;
     
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Integer numTelefono;
 
     @Column(nullable = false, unique = true)
@@ -43,7 +43,7 @@ public class Usuario {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Rol rol; // admin, participante
+    private Rol rol; // admin, participante, general
 
     // Getters y Setters
     public Long getId() {

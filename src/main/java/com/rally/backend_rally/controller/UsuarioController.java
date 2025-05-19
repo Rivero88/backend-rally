@@ -23,7 +23,7 @@ import com.rally.backend_rally.services.UsuarioService;
 @RequestMapping("/usuarios") // Prefijo para las rutas de este controlador
 public class UsuarioController  {
     @Autowired
-    private UsuarioService userService;// Servicio para acceder a los usuarios
+    private UsuarioService usuarioService;// Servicio para acceder a los usuarios
 
    /**
     * Endpoint GET para petición a la base de datos de los usuarios.
@@ -32,7 +32,7 @@ public class UsuarioController  {
     */
     @GetMapping
     public ResponseEntity<List<Usuario>> obtenerUsuarios() {
-    	List<Usuario> usuarios = userService.findAll();
+    	List<Usuario> usuarios = usuarioService.findAll();
         return ResponseEntity.ok(usuarios);
     }
     
@@ -43,7 +43,7 @@ public class UsuarioController  {
 	 */
     @DeleteMapping("/{idUsuario}")
     public void eliminarUsuario(@PathVariable Long idUsuario) {
-    	userService.deleteUser(idUsuario);
+    	usuarioService.deleteUser(idUsuario);
     }
     
 	/**
@@ -54,7 +54,7 @@ public class UsuarioController  {
 	 */
     @GetMapping("/{idUsuario}")
     public ResponseEntity<Usuario> obtenerUsuarioId(@PathVariable Long idUsuario){
-    	Usuario usuario = userService.findUserById(idUsuario);
+    	Usuario usuario = usuarioService.findUserById(idUsuario);
     	return ResponseEntity.ok(usuario);
     }
      
@@ -66,7 +66,7 @@ public class UsuarioController  {
 	 */
     @PutMapping
     public ResponseEntity<Usuario> editarUsuario(@RequestBody Usuario usuarioEditar){
-    	Usuario usuario = userService.update(usuarioEditar);
+    	Usuario usuario = usuarioService.update(usuarioEditar);
 		return ResponseEntity.ok(usuario);
     }
     
@@ -78,7 +78,7 @@ public class UsuarioController  {
 	 */
     @PutMapping("/modificarContrasenna")
     public void editarContrasenna(@RequestParam Long idUsuario, String contrasennaNueva) {
-    	userService.actualizarPassword(idUsuario, contrasennaNueva);
+    	usuarioService.actualizarPassword(idUsuario, contrasennaNueva);
     }
     
 	/**
@@ -89,7 +89,7 @@ public class UsuarioController  {
 	 */
     @PostMapping("/registrar")
     public ResponseEntity<Usuario> nuevoUsuario(@RequestBody Usuario usuarioNuevo){
-    	Usuario usuario = userService.nuevoUsuario(usuarioNuevo);
+    	Usuario usuario = usuarioService.nuevoUsuario(usuarioNuevo);
 		return ResponseEntity.ok(usuario);
     }
     

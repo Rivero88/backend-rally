@@ -13,7 +13,8 @@ import com.rally.backend_rally.entities.Voto;
 public interface VotoRepository  extends JpaRepository<Voto, Long> {
 	
 	/**
-	 * 
+	 * Se consulta una imagen y se comprueba si el usuario logueado ha votado esa imagen.
+	 * Si ya la ha votado no permite votarla.
 	 * @param imagenId
 	 * @param usuarioId
 	 * @return

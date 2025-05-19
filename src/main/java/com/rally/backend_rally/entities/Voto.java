@@ -11,24 +11,29 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
-@Entity // Etiqueta que nos indica que esto es una entidad JPA
+@Entity
+@Table(name = "votos")
 public class Voto {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(optional = true)
-    private Usuario usuario;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "imagen_id", nullable = false)
-	@JsonBackReference
-    private Imagen imagen;
-
+    
     @Column(nullable = false)
     private LocalDate fecha = LocalDate.now();
+
+    // Relación n:1 con Entidad Usuario
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "usuario_id", nullable = false) // Clave foránea
+    private Usuario usuario;
     
+    // Relación n:1 con Entidad Imagen
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "imagen_id", nullable = false) // Clave foránea
+	@JsonBackReference // Evita que se produzcan un bucle infinito
+    private Imagen imagen;
+
     // Getters y Setters
 	public Long getId() {
 		return id;

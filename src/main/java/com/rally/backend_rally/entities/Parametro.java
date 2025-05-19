@@ -16,12 +16,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-@Entity // Etiqueta que nos indica que esto es una entidad JPA
-@Table(name = "parametros") // Objeto que va a mapear la tabla parametros en la bbdd
+@Entity
+@Table(name = "rally")
 public class Parametro {
 	
-    @Id // Etiqueta que indica que es una clave primaria
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Se genera automáticamente 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
       
    	@Column(nullable = false)
@@ -50,9 +50,9 @@ public class Parametro {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fGanador;
 
-    // Relación uno-a-muchos con Categorias
+    // Relación 1:n con entidad Categoria
     @OneToMany(mappedBy = "rally", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference // evitar que se produzcan un bucle infinito
+    @JsonManagedReference // Evita que se produzcan un bucle infinito
     private List<Categoria> categorias = new ArrayList<>();  
     
     //Constructor vacío

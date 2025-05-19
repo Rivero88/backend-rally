@@ -4,13 +4,15 @@ public class CategoriaDto  {
 	private Long id;
     private String nombre;
     private String descripcion;
+    private ParametroDto parametro;
 	
 	// Constructor
-    public CategoriaDto(Long id, String nombre, String descripcion) {
+    public CategoriaDto(Long id, String nombre, String descripcion, ParametroDto parametro) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
+		this.parametro = parametro;
 	}
 
 	// Getter y setter
@@ -36,6 +38,14 @@ public class CategoriaDto  {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public ParametroDto getParametro() {
+		return parametro;
+	}
+
+	public void setParametro(ParametroDto parametro) {
+		this.parametro = parametro;
 	}
 }
 

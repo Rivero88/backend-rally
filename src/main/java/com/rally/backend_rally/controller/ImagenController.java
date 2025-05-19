@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rally.backend_rally.dto.ImagenRankingDto;
 import com.rally.backend_rally.entities.Imagen;
-import com.rally.backend_rally.entities.ImagenRequest;
+import com.rally.backend_rally.request.ImagenRequest;
 import com.rally.backend_rally.services.ImagenService;
 
 @RestController

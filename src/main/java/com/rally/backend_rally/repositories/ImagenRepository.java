@@ -24,4 +24,11 @@ public interface ImagenRepository extends JpaRepository<Imagen, Long> {
 	 * @return
 	 */
 	List<Imagen> findByEstadoValidacion(String string); 
+	
+	/**
+	 * 
+	 * @param categoriaId
+	 * @return
+	 */
+	boolean existsByCategoria_Id(Long categoriaId);
 }

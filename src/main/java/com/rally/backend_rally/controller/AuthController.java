@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rally.backend_rally.config.JwtUtil;
 import com.rally.backend_rally.dto.AuthDto;
-import com.rally.backend_rally.entities.LoginRequest;
 import com.rally.backend_rally.entities.Usuario;
+import com.rally.backend_rally.request.LoginRequest;
 import com.rally.backend_rally.services.UsuarioService;
 
 // Endpoint que el frontend usa para autenticarse y recibir un JWT y el rol del usuario

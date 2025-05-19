@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,6 +43,26 @@ public class CategoriaController  {
     @GetMapping("/cargar/categorias_ocupadas/{usuarioId}")
     public List<Long> obtenerCategoriasConFoto(@PathVariable Long usuarioId) {
     	return categoriasService.obtenerCategoriasConFoto(usuarioId);
+    }
+    
+    /**
+     * 
+     * @param categoriaNueva
+     * @return
+     */
+    @PostMapping("/nuevaCategoria")
+    public ResponseEntity<Categoria> nuevaCategoria(@RequestBody Categoria categoriaNueva){
+    	Categoria categoria = categoriasService.nuevaCategoria(categoriaNueva);
+		return ResponseEntity.ok(categoria);
+    }
+    
+    /**
+     * 
+     * @param categoriaId
+     */
+    @DeleteMapping("/eliminar/{categoriaId}")
+    public void eliminarCategoria(@PathVariable Long categoriaId) {
+    	categoriasService.eliminarCategoria(categoriaId);
     }
     
 }

@@ -11,13 +11,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-//Clase para los datos de las categorias del Rally
-@Entity // Etiqueta que nos indica que esto es una entidad JPA
-@Table(name = "categorias") // Objeto que va a mapear la tabla categorias en la bbdd
+@Entity
+@Table(name = "categorias")
 public class Categoria {
 	
-	@Id // Etiqueta que indica que es una clave primaria
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Se genera automáticamente 
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
 	@Column(nullable = false, unique = true)
@@ -26,9 +25,10 @@ public class Categoria {
 	@Column(nullable = false)
     private String descripcion;
     
+	// Relación n:1 con Entidad Parametro
 	@ManyToOne
     @JoinColumn(name = "rally_id", nullable = false) // Clave foránea
-	@JsonBackReference // evitar que se produzcan un bucle infinito
+	@JsonBackReference // Evita que se produzcan un bucle infinito
     private Parametro rally;
 	
 	// Getters y Setters

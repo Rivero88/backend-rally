@@ -2,6 +2,7 @@ package com.rally.backend_rally.repositories;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,5 +21,12 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 	 */
 	@Query("SELECT DISTINCT i.categoria.id FROM Imagen i WHERE i.usuario.id = :usuarioId")
 	List<Long> findCategoriasConFotoByUsuario(@Param("usuarioId") Long usuarioId);
+
+	/**
+	 * Consulta para buscar la categoria por su nombre
+	 * @param nombre
+	 * @return
+	 */
+	Optional<Categoria> findByNombre(String nombre);
 	
 }

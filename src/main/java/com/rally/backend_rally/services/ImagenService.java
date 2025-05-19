@@ -23,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.rally.backend_rally.dto.ImagenRankingDto;
 import com.rally.backend_rally.entities.Categoria;
 import com.rally.backend_rally.entities.Imagen;
-import com.rally.backend_rally.entities.ImagenRequest;
 import com.rally.backend_rally.entities.Usuario;
 import com.rally.backend_rally.excepciones.CategoriaNoEncontradaException;
 import com.rally.backend_rally.excepciones.UsuarioNoEncontradoException;
@@ -34,6 +33,7 @@ import com.rally.backend_rally.repositories.CategoriaRepository;
 import com.rally.backend_rally.repositories.ImagenRepository;
 import com.rally.backend_rally.repositories.UsuarioRepository;
 import com.rally.backend_rally.repositories.VotoRepository;
+import com.rally.backend_rally.request.ImagenRequest;
 
 @Service
 public class ImagenService {

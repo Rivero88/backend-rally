@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler  {
    
-    @ExceptionHandler({ValidarFormatoException.class, ValidarTamannoException.class, ValidarVacioException.class})
+    @ExceptionHandler({ValidarFormatoException.class, ValidarTamannoException.class, ValidarVacioException.class, ValidarNombreCategoria.class})
     public ResponseEntity<Map<String, String>> handlerBadRequestException(Exception ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -21,6 +21,13 @@ public class GlobalExceptionHandler  {
     public ResponseEntity<Map<String, String>> handlerNotFoundException(Exception ex) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
+                .body(Map.of("message", ex.getMessage()));
+    }
+    
+    @ExceptionHandler(ErrorEliminarCategoria.class)
+    public ResponseEntity<Map<String, String>> handleIllegalStateException(Exception ex) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
                 .body(Map.of("message", ex.getMessage()));
     }
 

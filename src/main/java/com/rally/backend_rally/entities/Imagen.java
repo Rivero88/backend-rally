@@ -20,9 +20,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
-//Clase para las imagenes del Rally
-@Entity // Etiqueta que nos indica que esto es una entidad JPA
-@Table(name = "imagenes") // Objeto que va a mapear la tabla categorias en la bbdd
+@Entity
+@Table(name = "imagenes")
 public class Imagen {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,14 +48,17 @@ public class Imagen {
     
     private String url;
     
+    // Relación n:1 con Entidad Categoria
     @ManyToOne
-    @JoinColumn(name = "categoria_id")
+    @JoinColumn(name = "categoria_id", nullable = false)// Clave foránea
     private Categoria categoria; 
 
+    // Relación n:1 con Entidad Usuario
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "usuario_id", nullable = false)// Clave foránea
     private Usuario usuario;
 
+    // Relación 1:n con entidad Voto
     @OneToMany(mappedBy = "imagen", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Voto> votos = new ArrayList<>(); 

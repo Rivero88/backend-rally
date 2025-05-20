@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rally.backend_rally.config.JwtUtil;
-import com.rally.backend_rally.dto.AuthDto;
+import com.rally.backend_rally.entities.Auth;
 import com.rally.backend_rally.entities.Usuario;
 import com.rally.backend_rally.request.LoginRequest;
 import com.rally.backend_rally.services.UsuarioService;
@@ -33,13 +33,13 @@ public class AuthController {
      * Recibe un alias y contraseña, autentica, y devuelve un token, el rol y el id
      */
     @PostMapping("/login")
-    public ResponseEntity<AuthDto> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<Auth> login(@RequestBody LoginRequest request) {
     	// 1. Autentica las credenciales con Spring Security
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getAlias(), request.getPassword()));
         // 2. Si no lanza excepción, genera un JWT para ese alias. Obtiene el usuario
         String token = jwtUtil.generateToken(request.getAlias());
         Usuario user = userService.findByAlias(request.getAlias());
         // 3. Devuelve un DTO con el token, el rol y el id del usuario
-        return ResponseEntity.ok(new AuthDto(token, user.getRol(), user.getId()));
+        return ResponseEntity.ok(new Auth(token, user.getRol(), user.getId()));
     }
 }

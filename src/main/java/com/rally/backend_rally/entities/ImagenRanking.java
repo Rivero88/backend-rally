@@ -1,6 +1,6 @@
-package com.rally.backend_rally.dto;
+package com.rally.backend_rally.entities;
 
-public class ImagenRankingDto  {
+public class ImagenRanking  {
 	private Long id;
     private String nombre;
     private String categoria;
@@ -8,7 +8,7 @@ public class ImagenRankingDto  {
     private int votos;
 	
 	// Constructor
-    public ImagenRankingDto(Long id, String nombre, String categoria, String autor, int votos) {
+    public ImagenRanking(Long id, String nombre, String categoria, String autor, int votos) {
 		super();
 		this.id = id;
         this.nombre = nombre;

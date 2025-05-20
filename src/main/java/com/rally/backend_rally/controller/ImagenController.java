@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rally.backend_rally.dto.ImagenRankingDto;
 import com.rally.backend_rally.entities.Imagen;
+import com.rally.backend_rally.entities.ImagenRanking;
 import com.rally.backend_rally.request.ImagenRequest;
 import com.rally.backend_rally.services.ImagenService;
 
@@ -124,7 +124,7 @@ public class ImagenController {
      * @return
      */
     @GetMapping("/ranking")
-    public ResponseEntity<List<ImagenRankingDto>> obtenerRanking() {
+    public ResponseEntity<List<ImagenRanking>> obtenerRanking() {
         return ResponseEntity.ok(imagenService.obtenerRankingImagenes());
     }
 }

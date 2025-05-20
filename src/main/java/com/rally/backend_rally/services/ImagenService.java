@@ -20,9 +20,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.rally.backend_rally.dto.ImagenRankingDto;
 import com.rally.backend_rally.entities.Categoria;
 import com.rally.backend_rally.entities.Imagen;
+import com.rally.backend_rally.entities.ImagenRanking;
 import com.rally.backend_rally.entities.Usuario;
 import com.rally.backend_rally.excepciones.CategoriaNoEncontradaException;
 import com.rally.backend_rally.excepciones.UsuarioNoEncontradoException;
@@ -276,10 +276,10 @@ public class ImagenService {
 	 * Método para obtener el ranking de las imágenes validadas ordenadas en orden descendente
 	 * @return
 	 */
-	public List<ImagenRankingDto> obtenerRankingImagenes() {
+	public List<ImagenRanking> obtenerRankingImagenes() {
 	    List<Imagen> imagenesValidadas = imagenRepository.findByEstadoValidacion("Validada");
 	    // Transforma cada imagen en un DTO con la cantidad de votos
-	    List<ImagenRankingDto> ranking = imagenesValidadas.stream()
+	    List<ImagenRanking> ranking = imagenesValidadas.stream()
 	        .map(imagen -> {
 	            Long id = imagen.getId();
 	            String nombre = imagen.getNombre();
@@ -287,10 +287,10 @@ public class ImagenService {
 	            String autor = imagen.getUsuario().getNombre() + " " + imagen.getUsuario().getApellidos();
 	            int votos = votoRepository.countByImagen(imagen);
 
-	            return new ImagenRankingDto(id, nombre, categoria, autor, votos);
+	            return new ImagenRanking(id, nombre, categoria, autor, votos);
 	        })
 	        // Ordena por cantidad de votos descendente
-	        .sorted(Comparator.comparingInt(ImagenRankingDto::getVotos).reversed())
+	        .sorted(Comparator.comparingInt(ImagenRanking::getVotos).reversed())
 	        .collect(Collectors.toList());
 
 	    return ranking;

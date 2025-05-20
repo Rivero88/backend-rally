@@ -1,9 +1,9 @@
-package com.rally.backend_rally.dto;
+package com.rally.backend_rally.entities;
 
 import com.rally.backend_rally.enums.Rol;
 
 //DTO (Data Transfer Object) que se usa para mandar al frontend el resultado del login: el token JWT y el rol 
-public class AuthDto {
+public class Auth {
 	private String token;
 	
 	private Rol rol;
@@ -11,7 +11,7 @@ public class AuthDto {
 	private Long idUsuario;
 	
 	// Constructor
-	public AuthDto(String token, Rol rol, Long idUsuario) {
+	public Auth(String token, Rol rol, Long idUsuario) {
 		super();
 		this.token = token;
 		this.rol = rol;

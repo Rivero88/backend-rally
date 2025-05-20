@@ -45,6 +45,7 @@ public class SecurityConfig{
         http.cors(withDefaults()) 
             .csrf(csrf -> csrf.disable()) // Desactiva CSRF porque se usan Tokens
             .authorizeHttpRequests(auth -> auth
+		.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/auth/**","/parametros", "/usuarios/registrar", "/imagenes/listar", "/imagenes/obtenerImagen/**", "/imagenes/votar/**", "/imagenes/ranking/**" ).permitAll()
                 .anyRequest().authenticated() // Requiere autenticación para cualquier otra ruta
             )
@@ -77,7 +78,7 @@ public class SecurityConfig{
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200","https://frontend-rally.onrender.com"));
+        configuration.setAllowedOriginPatterns(List.of("http://localhost:4200","https://frontend-rally.onrender.com"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true); // Si necesitas enviar cookies o cabeceras como Authorization

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rally.backend_rally.entities.Parametro;
+import com.rally.backend_rally.entities.Usuario;
 import com.rally.backend_rally.excepciones.ParametroNoEncontradoException;
 import com.rally.backend_rally.excepciones.ParametroNoGuardado;
 import com.rally.backend_rally.repositories.ParametroRepository;
@@ -41,5 +42,15 @@ public class ParametroService {
 		}catch (Exception e){
 			throw new ParametroNoGuardado();
 		}
+	}
+	
+	public Parametro findByTema(String temaRally) {
+		Optional<Parametro> parametroOptional = parametroRepository.findByTema();
+		return parametroOptional.isPresent() ? parametroOptional.get() : new Parametro();
+		
+	}
+	
+	public Parametro guardar(Parametro parametroNuevo) {
+		return parametroRepository.save(parametroNuevo);
 	}
 }

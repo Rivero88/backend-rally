@@ -17,7 +17,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "rally")
+@Table(name = "parametros")
 public class Parametro {
 	
     @Id

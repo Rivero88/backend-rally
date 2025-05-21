@@ -81,7 +81,7 @@ public class UsuarioService {
 	}
 	
 	/**
-	 * Método que guarda un usuario nuevo.
+	 * Método que guarda un usuario participante
 	 * @param usuarioNuevo
 	 * @return usuario
 	 */
@@ -95,6 +95,15 @@ public class UsuarioService {
 		usuarioNuevo.setPassword(contrasennaEncriptada);		
 		Usuario usuario = userRepository.save(usuarioNuevo);
 		return usuario;
+	}
+	
+	/**
+	 * Para guardar un usuario
+	 * @param usuarioNuevo
+	 * @return
+	 */
+	public Usuario guardar(Usuario usuarioNuevo) {
+		return userRepository.save(usuarioNuevo);
 	}
 	
 }

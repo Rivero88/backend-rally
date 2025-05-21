@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler  {
    
-    @ExceptionHandler({ValidarFormatoException.class, ValidarTamannoException.class, ValidarVacioException.class, ValidarNombreCategoria.class})
+    @ExceptionHandler({ValidarFormatoException.class, ValidarTamannoException.class, ValidarVacioException.class, ValidarNombreCategoria.class, ParametroNoGuardado.class})
     public ResponseEntity<Map<String, String>> handlerBadRequestException(Exception ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(Map.of("message", ex.getMessage()));
     }
     
-    @ExceptionHandler({UsuarioNoEncontradoException.class, CategoriaNoEncontradaException.class, ValidarAliasException.class})
+    @ExceptionHandler({UsuarioNoEncontradoException.class, CategoriaNoEncontradaException.class, ValidarAliasException.class, ParametroNoEncontradoException.class})
     public ResponseEntity<Map<String, String>> handlerNotFoundException(Exception ex) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)

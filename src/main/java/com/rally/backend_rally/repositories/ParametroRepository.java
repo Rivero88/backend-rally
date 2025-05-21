@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.rally.backend_rally.entities.Parametro;
 
-@Repository // Es un repositorio para la entidad Parametros
+@Repository
 public interface ParametroRepository  extends JpaRepository<Parametro, Long> {
 
 }

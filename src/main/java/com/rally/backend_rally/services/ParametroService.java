@@ -45,7 +45,7 @@ public class ParametroService {
 	}
 	
 	public Parametro findByTema(String temaRally) {
-		Optional<Parametro> parametroOptional = parametroRepository.findByTema();
+		Optional<Parametro> parametroOptional = parametroRepository.findByTema(temaRally);
 		return parametroOptional.isPresent() ? parametroOptional.get() : new Parametro();
 		
 	}

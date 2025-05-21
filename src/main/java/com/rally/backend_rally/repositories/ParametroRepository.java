@@ -11,6 +11,6 @@ import com.rally.backend_rally.entities.Parametro;
 @Repository
 public interface ParametroRepository  extends JpaRepository<Parametro, Long> {
 
-	Optional<Parametro> findByTema();
+	Optional<Parametro> findByTema(String tema);
 
 }

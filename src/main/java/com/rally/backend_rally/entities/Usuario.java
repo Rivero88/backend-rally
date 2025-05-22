@@ -14,7 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity // Etiqueta que nos indica que esto es una entidad JPA
-@Table(name = "usuarios")
+@Table(name = "usuario")
 public class Usuario {
     @Id // Etiqueta que indica que es una clave primaria
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Se genera automáticamente 
@@ -23,10 +23,10 @@ public class Usuario {
     @Column(nullable = false, unique = true)
     private String alias;
     
-   	@Column(nullable = false)
+   	@Column(nullable = true)
     private String nombre;
     
-   	@Column(nullable = false)
+   	@Column(nullable = true)
     private String apellidos;
     
     @Column(nullable = true)

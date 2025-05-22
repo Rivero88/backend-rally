@@ -72,7 +72,7 @@ public class UsuarioController  {
     
 	/**
 	 * Endpoint PUT para modificar la contraseña de un usuario en la base de datos
-	 * Llama al método actualizarPassword del servicio para modificar la contraseña de un usuario
+	 * Llama al método actualizarPassword para modificar la contraseña de un usuario
 	 * @param idUsuario
 	 * @param contrasennaNueva
 	 */
@@ -91,6 +91,12 @@ public class UsuarioController  {
     public ResponseEntity<Usuario> nuevoUsuario(@RequestBody Usuario usuarioNuevo){
     	Usuario usuario = usuarioService.nuevoUsuario(usuarioNuevo);
 		return ResponseEntity.ok(usuario);
+    }
+    
+    @PostMapping("/registrarVoto")
+    public ResponseEntity<Usuario> nuevoUsuarioVoto(@RequestBody Usuario usuarioNuevoVoto){
+    	Usuario usuarioVoto = usuarioService.nuevoUsuarioVoto(usuarioNuevoVoto);
+		return ResponseEntity.ok(usuarioVoto);
     }
     
 }

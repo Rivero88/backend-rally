@@ -21,7 +21,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
 @Entity
-@Table(name = "imagenes")
+@Table(name = "imagen")
 public class Imagen {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

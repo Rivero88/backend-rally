@@ -25,6 +25,10 @@ import com.rally.backend_rally.entities.Imagen;
 import com.rally.backend_rally.entities.ImagenRanking;
 import com.rally.backend_rally.entities.Usuario;
 import com.rally.backend_rally.excepciones.CategoriaNoEncontradaException;
+import com.rally.backend_rally.excepciones.ImagenNoEncontradaException;
+import com.rally.backend_rally.excepciones.ImagenNoGuardada;
+import com.rally.backend_rally.excepciones.ParametroNoEncontradoException;
+import com.rally.backend_rally.excepciones.ParametroNoGuardado;
 import com.rally.backend_rally.excepciones.UsuarioNoEncontradoException;
 import com.rally.backend_rally.excepciones.ValidarFormatoException;
 import com.rally.backend_rally.excepciones.ValidarTamannoException;
@@ -252,6 +256,8 @@ public class ImagenService {
 		Optional<Imagen> imagenOptional = imagenRepository.findById(imagenId);
 		if(imagenOptional.isPresent()) {
 			imagen = imagenOptional.get();
+		}else {
+			throw new ImagenNoEncontradaException();
 		}
 		return imagen;
 	}
@@ -269,7 +275,11 @@ public class ImagenService {
 			imagen.setNombre(imagenEditar.getNombre());
 			imagen.setDescripcion(imagenEditar.getDescripcion());
 		}
-		return imagenRepository.save(imagen);
+		try {
+			return imagenRepository.save(imagen);
+		}catch (Exception e){
+			throw new ImagenNoGuardada();
+		}
 	}
 	
 	/**

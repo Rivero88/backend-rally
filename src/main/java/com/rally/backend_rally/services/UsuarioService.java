@@ -11,6 +11,7 @@ import com.rally.backend_rally.Util;
 import com.rally.backend_rally.entities.Usuario;
 import com.rally.backend_rally.enums.Rol;
 import com.rally.backend_rally.excepciones.ValidarAliasException;
+import com.rally.backend_rally.excepciones.ValidarEmailException;
 import com.rally.backend_rally.repositories.UsuarioRepository;
 
 @Service
@@ -86,15 +87,40 @@ public class UsuarioService {
 	 * @return usuario
 	 */
 	public Usuario nuevoUsuario(Usuario usuarioNuevo) {
-		Optional<Usuario> userOptional = userRepository.findByAlias(usuarioNuevo.getAlias());
-		if(userOptional.isPresent()) {
+		Optional<Usuario> usuarioOptional = userRepository.findByAlias(usuarioNuevo.getAlias());
+		if(usuarioOptional.isPresent()) {
 			throw new ValidarAliasException();
+		}
+		Optional<Usuario> usuarioOptional2 = userRepository.findByEmail(usuarioNuevo.getEmail());
+		if(usuarioOptional2.isPresent()){
+			throw new ValidarEmailException();
 		}
 		usuarioNuevo.setRol(Rol.participante);
 		String contrasennaEncriptada = Util.encriptarPassword(usuarioNuevo.getPassword());
 		usuarioNuevo.setPassword(contrasennaEncriptada);		
 		Usuario usuario = userRepository.save(usuarioNuevo);
 		return usuario;
+	}
+	
+	/**
+	 * Método que guarda un usuario general
+	 * @param usuarioNuevoVoto
+	 * @return usuarioVoto
+	 */
+	public Usuario nuevoUsuarioVoto(Usuario usuarioNuevoVoto) {
+		Optional<Usuario> usuarioOptional = userRepository.findByAlias(usuarioNuevoVoto.getAlias());
+		if(usuarioOptional.isPresent()) {
+			throw new ValidarAliasException();
+		}
+		Optional<Usuario> usuarioOptional2 = userRepository.findByEmail(usuarioNuevoVoto.getEmail());
+		if(usuarioOptional2.isPresent()){
+			throw new ValidarEmailException();
+		}
+		usuarioNuevoVoto.setRol(Rol.general);
+		String contrasennaEncriptada = Util.encriptarPassword(usuarioNuevoVoto.getPassword());
+		usuarioNuevoVoto.setPassword(contrasennaEncriptada);		
+		Usuario usuarioVoto = userRepository.save(usuarioNuevoVoto);
+		return usuarioVoto;
 	}
 	
 	/**

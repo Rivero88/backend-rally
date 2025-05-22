@@ -10,4 +10,4 @@ FROM eclipse-temurin:21-jdk
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-Xmx512", "-XX:MaxMetaspaceSize=256m", "-Dspring.profiles.active=production", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Xmx512m", "-XX:MaxMetaspaceSize=256m", "-Dspring.profiles.active=production", "-jar", "app.jar"]

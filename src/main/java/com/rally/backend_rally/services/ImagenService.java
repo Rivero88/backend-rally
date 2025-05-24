@@ -27,8 +27,6 @@ import com.rally.backend_rally.entities.Usuario;
 import com.rally.backend_rally.excepciones.CategoriaNoEncontradaException;
 import com.rally.backend_rally.excepciones.ImagenNoEncontradaException;
 import com.rally.backend_rally.excepciones.ImagenNoGuardada;
-import com.rally.backend_rally.excepciones.ParametroNoEncontradoException;
-import com.rally.backend_rally.excepciones.ParametroNoGuardado;
 import com.rally.backend_rally.excepciones.UsuarioNoEncontradoException;
 import com.rally.backend_rally.excepciones.ValidarFormatoException;
 import com.rally.backend_rally.excepciones.ValidarTamannoException;

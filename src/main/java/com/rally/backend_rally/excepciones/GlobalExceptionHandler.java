@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler  {
    
-    @ExceptionHandler({ValidarFormatoException.class, ValidarTamannoException.class, ValidarVacioException.class, ValidarNombreCategoria.class, ParametroNoGuardado.class, ImagenNoGuardada.class})
+    @ExceptionHandler({ValidarFormatoException.class, ValidarTamannoException.class, ValidarVacioException.class, ValidarNombreCategoria.class, ParametroNoGuardado.class, ImagenNoGuardada.class,
+    	UsuarioNoGuardado.class, CategoriaNoGuardada.class})
     public ResponseEntity<Map<String, String>> handlerBadRequestException(Exception ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)

@@ -66,7 +66,7 @@ public class UsuarioController  {
 	 */
     @PutMapping
     public ResponseEntity<Usuario> editarUsuario(@RequestBody Usuario usuarioEditar){
-    	Usuario usuario = usuarioService.update(usuarioEditar);
+    	Usuario usuario = usuarioService.actualizar(usuarioEditar);
 		return ResponseEntity.ok(usuario);
     }
     

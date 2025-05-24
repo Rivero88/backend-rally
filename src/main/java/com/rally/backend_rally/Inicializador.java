@@ -43,7 +43,7 @@ public class Inicializador {
             admin.setEmail("admin1@gmail.com");
             admin.setPassword("$2a$10$3smbmFlYsjdViYGMn6kEZeQ.kTIVWJiKu1uY7.a5QTTE0.ylg2HDK");
             admin.setRol(Rol.admin);
-            usuarioService.guardar(admin);
+            usuarioService.guardarUsuarioAdmin(admin);
         }
 	}
 	

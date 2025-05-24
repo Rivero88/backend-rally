@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.rally.backend_rally.entities.Categoria;
 import com.rally.backend_rally.entities.Parametro;
 import com.rally.backend_rally.excepciones.CategoriaNoEncontradaException;
+import com.rally.backend_rally.excepciones.CategoriaNoGuardada;
 import com.rally.backend_rally.excepciones.ErrorEliminarCategoria;
 import com.rally.backend_rally.excepciones.ValidarNombreCategoria;
 import com.rally.backend_rally.repositories.CategoriaRepository;
@@ -51,8 +52,13 @@ public class CategoriaService {
 			throw new ValidarNombreCategoria();
 		}		
 		categoriaNueva.setRally(parametro);
-		Categoria categoria = categoriaRepository.save(categoriaNueva);
-		return categoria;
+		try {
+			Categoria categoria = categoriaRepository.save(categoriaNueva);
+			return categoria;
+		}catch(Exception e) {
+			throw new CategoriaNoGuardada();
+		}
+		
 	}
 	
 	public void eliminarCategoria(Long categoriaId) {

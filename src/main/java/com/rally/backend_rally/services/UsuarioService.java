@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.rally.backend_rally.Util;
 import com.rally.backend_rally.entities.Usuario;
 import com.rally.backend_rally.enums.Rol;
+import com.rally.backend_rally.excepciones.UsuarioNoEncontradoException;
+import com.rally.backend_rally.excepciones.UsuarioNoGuardado;
 import com.rally.backend_rally.excepciones.ValidarAliasException;
 import com.rally.backend_rally.excepciones.ValidarEmailException;
 import com.rally.backend_rally.repositories.UsuarioRepository;
@@ -18,7 +20,7 @@ import com.rally.backend_rally.repositories.UsuarioRepository;
 public class UsuarioService {
 
 	@Autowired
-	private UsuarioRepository userRepository;
+	private UsuarioRepository usuarioRepository;
 	
 	/**
 	 * Método que realiza una búsqueda en la bbdd mediante el alias.
@@ -26,7 +28,7 @@ public class UsuarioService {
 	 * @return Optional de tipo User o nuevo usuario vacío
 	 */
 	public Usuario findByAlias(String alias) {
-		Optional<Usuario> usuarioOptional = userRepository.findByAlias(alias);
+		Optional<Usuario> usuarioOptional = usuarioRepository.findByAlias(alias);
 		return usuarioOptional.isPresent() ? usuarioOptional.get() : new Usuario();
 	}
 	
@@ -35,7 +37,7 @@ public class UsuarioService {
 	 * @return lista de usuarios o lista vacía
 	 */
 	public List<Usuario> findAll() {
-	    List<Usuario> usuarios = userRepository.findAll();
+	    List<Usuario> usuarios = usuarioRepository.findAll();
 	    return usuarios != null ? usuarios : new ArrayList<>();
 	}
 	
@@ -45,7 +47,7 @@ public class UsuarioService {
 	 * @return Optional de tipo User o nuevo usuario vacío
 	 */
 	public Usuario findUserById(Long idUsuario) {
-		Optional<Usuario> userOptional = userRepository.findById(idUsuario);
+		Optional<Usuario> userOptional = usuarioRepository.findById(idUsuario);
 		return userOptional.isPresent() ? userOptional.get() : new Usuario();
 	}
 
@@ -54,16 +56,30 @@ public class UsuarioService {
 	 * @param idUsuario
 	 */
 	public void deleteUser(Long idUsuario) {
-		userRepository.deleteById(idUsuario);
+		try {
+			usuarioRepository.deleteById(idUsuario);
+		}catch(Exception e) {
+			throw new UsuarioNoEncontradoException();
+		}
+		
 	}
 	
 	/**
 	 *  Método que guarda un usuario que ha sido modificado.
 	 * @return usuario
 	 */
-	public Usuario update(Usuario usuarioEditar) {
-		Usuario usuario = userRepository.save(usuarioEditar);
-		return usuario;
+	public Usuario actualizar(Usuario usuarioEditar) {
+		Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(usuarioEditar.getEmail());
+		if(usuarioOptional.isPresent() && !usuarioOptional.get().getId().equals(usuarioEditar.getId())){
+			throw new ValidarEmailException();
+		}
+		try {
+			Usuario usuario = usuarioRepository.save(usuarioEditar);
+			return usuario;
+		}catch(Exception e) {
+			throw new UsuarioNoGuardado();
+		}
+		
 	}
 	
 	/**
@@ -72,12 +88,12 @@ public class UsuarioService {
 	 * @param contrasennaNueva
 	 */
 	public void actualizarPassword(Long idUsuario, String contrasennaNueva) {
-		Optional<Usuario> userOptional = userRepository.findById(idUsuario);
+		Optional<Usuario> userOptional = usuarioRepository.findById(idUsuario);
 		if(userOptional.isPresent()) {
 			Usuario usuario = userOptional.get();
 			String contrasennaEncriptada = Util.encriptarPassword(contrasennaNueva);
 			usuario.setPassword(contrasennaEncriptada);
-			userRepository.save(usuario);
+			usuarioRepository.save(usuario);
 		}	
 	}
 	
@@ -87,19 +103,24 @@ public class UsuarioService {
 	 * @return usuario
 	 */
 	public Usuario nuevoUsuario(Usuario usuarioNuevo) {
-		Optional<Usuario> usuarioOptional = userRepository.findByAlias(usuarioNuevo.getAlias());
+		Optional<Usuario> usuarioOptional = usuarioRepository.findByAlias(usuarioNuevo.getAlias());
 		if(usuarioOptional.isPresent()) {
 			throw new ValidarAliasException();
 		}
-		Optional<Usuario> usuarioOptional2 = userRepository.findByEmail(usuarioNuevo.getEmail());
+		Optional<Usuario> usuarioOptional2 = usuarioRepository.findByEmail(usuarioNuevo.getEmail());
 		if(usuarioOptional2.isPresent()){
 			throw new ValidarEmailException();
 		}
 		usuarioNuevo.setRol(Rol.participante);
 		String contrasennaEncriptada = Util.encriptarPassword(usuarioNuevo.getPassword());
-		usuarioNuevo.setPassword(contrasennaEncriptada);		
-		Usuario usuario = userRepository.save(usuarioNuevo);
-		return usuario;
+		usuarioNuevo.setPassword(contrasennaEncriptada);
+		try {
+			Usuario usuario = usuarioRepository.save(usuarioNuevo);
+			return usuario;
+		}catch(Exception e) {
+			throw new UsuarioNoGuardado();
+		}
+		
 	}
 	
 	/**
@@ -108,28 +129,32 @@ public class UsuarioService {
 	 * @return usuarioVoto
 	 */
 	public Usuario nuevoUsuarioVoto(Usuario usuarioNuevoVoto) {
-		Optional<Usuario> usuarioOptional = userRepository.findByAlias(usuarioNuevoVoto.getAlias());
+		Optional<Usuario> usuarioOptional = usuarioRepository.findByAlias(usuarioNuevoVoto.getAlias());
 		if(usuarioOptional.isPresent()) {
 			throw new ValidarAliasException();
 		}
-		Optional<Usuario> usuarioOptional2 = userRepository.findByEmail(usuarioNuevoVoto.getEmail());
+		Optional<Usuario> usuarioOptional2 = usuarioRepository.findByEmail(usuarioNuevoVoto.getEmail());
 		if(usuarioOptional2.isPresent()){
 			throw new ValidarEmailException();
 		}
 		usuarioNuevoVoto.setRol(Rol.general);
 		String contrasennaEncriptada = Util.encriptarPassword(usuarioNuevoVoto.getPassword());
 		usuarioNuevoVoto.setPassword(contrasennaEncriptada);		
-		Usuario usuarioVoto = userRepository.save(usuarioNuevoVoto);
-		return usuarioVoto;
+		try {
+			Usuario usuarioVoto = usuarioRepository.save(usuarioNuevoVoto);
+			return usuarioVoto;
+		}catch(Exception e) {
+			throw new UsuarioNoGuardado();
+		}
 	}
 	
 	/**
-	 * Para guardar un usuario
+	 * Para guardar usuario admin del inicializador
 	 * @param usuarioNuevo
 	 * @return
 	 */
-	public Usuario guardar(Usuario usuarioNuevo) {
-		return userRepository.save(usuarioNuevo);
+	public Usuario guardarUsuarioAdmin(Usuario usuarioNuevo) {
+		return usuarioRepository.save(usuarioNuevo);
 	}
 	
 }

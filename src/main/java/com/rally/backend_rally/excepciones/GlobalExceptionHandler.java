@@ -31,6 +31,13 @@ public class GlobalExceptionHandler  {
                 .status(HttpStatus.CONFLICT)
                 .body(Map.of("message", ex.getMessage()));
     }
+    
+    @ExceptionHandler(LoginContrasennaIncorrecto.class)
+    public ResponseEntity<Map<String, String>> handleLoginIncorrecto(Exception ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("message", ex.getMessage()));
+    }
 
     // Para manejar cualquier otro error genérico (opcional)
     @ExceptionHandler(Exception.class)

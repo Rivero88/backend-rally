@@ -26,8 +26,8 @@ public class UsuarioService {
 	 * @return Optional de tipo User o nuevo usuario vacío
 	 */
 	public Usuario findByAlias(String alias) {
-		Optional<Usuario> userOptional = userRepository.findByAlias(alias);
-		return userOptional.isPresent() ? userOptional.get() : new Usuario();
+		Optional<Usuario> usuarioOptional = userRepository.findByAlias(alias);
+		return usuarioOptional.isPresent() ? usuarioOptional.get() : new Usuario();
 	}
 	
 	/**

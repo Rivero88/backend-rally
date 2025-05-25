@@ -48,7 +48,7 @@ public class SecurityConfig{
             .csrf(csrf -> csrf.disable()) // Desactiva CSRF porque se usan Tokens
             .authorizeHttpRequests(auth -> auth
 		.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers("/auth/**","/parametros", "/usuarios/registrar", "/usuarios/registrarVoto", "/imagenes/listar", "/imagenes/obtenerImagen/**", "/imagenes/votar/**", "/imagenes/ranking/**" ).permitAll()
+                .requestMatchers("/auth/**","/parametros", "/usuarios/registrar", "/usuarios/registrarVoto", "/imagenes/listar", "/imagenes/obtenerImagen/**", "/imagenes/votar/**", "/imagenes/ranking/**", "/votos/obtenerVotos/**" ).permitAll()
                 .anyRequest().authenticated() // Requiere autenticación para cualquier otra ruta
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

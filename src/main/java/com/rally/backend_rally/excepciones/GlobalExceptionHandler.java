@@ -41,7 +41,7 @@ public class GlobalExceptionHandler  {
     }
 
     // Para manejar cualquier otro error genérico (opcional)
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler({Exception.class, FicheroNoValidoException.class})
     public ResponseEntity<Map<String, String>> handleGeneralException(Exception ex) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)

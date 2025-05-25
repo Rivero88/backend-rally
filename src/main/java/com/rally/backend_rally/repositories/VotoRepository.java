@@ -1,6 +1,7 @@
 package com.rally.backend_rally.repositories;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +15,6 @@ public interface VotoRepository  extends JpaRepository<Voto, Long> {
 	
 	/**
 	 * Se consulta una imagen y se comprueba si el usuario logueado ha votado esa imagen.
-	 * Si ya la ha votado no permite votarla.
 	 * @param imagenId
 	 * @param usuarioId
 	 * @return
@@ -27,4 +27,11 @@ public interface VotoRepository  extends JpaRepository<Voto, Long> {
 	  * @return
 	  */
 	 int countByImagen(Imagen imagen);
+
+	 /**
+	  * Consulta para listar los votos de una imagen
+	  * @param imagenId
+	  * @return
+	  */
+	 List<Voto> findByImagenId(Long imagenId);
 }

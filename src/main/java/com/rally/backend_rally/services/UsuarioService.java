@@ -61,7 +61,6 @@ public class UsuarioService {
 		}catch(Exception e) {
 			throw new UsuarioNoEncontradoException();
 		}
-		
 	}
 	
 	/**

@@ -25,6 +25,7 @@ import com.rally.backend_rally.entities.Imagen;
 import com.rally.backend_rally.entities.ImagenRanking;
 import com.rally.backend_rally.entities.Usuario;
 import com.rally.backend_rally.excepciones.CategoriaNoEncontradaException;
+import com.rally.backend_rally.excepciones.FicheroNoValidoException;
 import com.rally.backend_rally.excepciones.ImagenNoEncontradaException;
 import com.rally.backend_rally.excepciones.ImagenNoGuardada;
 import com.rally.backend_rally.excepciones.UsuarioNoEncontradoException;
@@ -179,29 +180,26 @@ public class ImagenService {
 	 */
 	public ResponseEntity<byte[]> obtenerImagenVer(Long imagenId) {
 		Optional<Imagen> imagenOptional = imagenRepository.findById(imagenId);
-		if (imagenOptional.isPresent()) {
-			Imagen imagen = imagenOptional.get();
-			String rutaArchivo = rutaGlobal + imagen.getUrl();
-			 try {
-		            Path path = Paths.get(rutaArchivo);
-		            byte[] contenido = Files.readAllBytes(path);
+		if (!imagenOptional.isPresent()) {
+			throw new ImagenNoEncontradaException();
+		}
+		Imagen imagen = imagenOptional.get();
+		String rutaArchivo = rutaGlobal + imagen.getUrl();
+		 try {
+	            Path path = Paths.get(rutaArchivo);
+	            byte[] contenido = Files.readAllBytes(path);
 
-		            String contentType = Files.probeContentType(path);
-		            if (contentType == null) {
-		                contentType = "application/octet-stream"; // fallback
-		            }
+	            String contentType = Files.probeContentType(path);
+	            if (contentType == null) {
+	                contentType = "application/octet-stream"; // fallback
+	            }
 
-		            return ResponseEntity.ok()
-		                    .contentType(MediaType.parseMediaType(contentType))
-		                    .body(contenido);
-
-		        } catch (IOException e) {
-		            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		        }
-
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+	            return ResponseEntity.ok()
+	                    .contentType(MediaType.parseMediaType(contentType))
+	                    .body(contenido);
+	     } catch (IOException e) {
+	            throw new FicheroNoValidoException();
+	        }
     }
 
 	/**

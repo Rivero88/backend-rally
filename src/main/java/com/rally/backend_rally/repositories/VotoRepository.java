@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.rally.backend_rally.entities.Imagen;
@@ -34,4 +35,11 @@ public interface VotoRepository  extends JpaRepository<Voto, Long> {
 	  * @return
 	  */
 	 List<Voto> findByImagenId(Long imagenId);
+	 
+	 /**
+	  * 
+	  * @return
+	  */
+	 @Query("SELECT FUNCTION('DATE', v.fecha) AS fecha, COUNT(v) AS totalVotos FROM Voto v GROUP BY FUNCTION('DATE', v.fecha) ORDER BY fecha")
+	 List<Object[]> contarVotosPorFecha();
 }

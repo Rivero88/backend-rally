@@ -3,6 +3,7 @@ package com.rally.backend_rally.services;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.rally.backend_rally.entities.Imagen;
 import com.rally.backend_rally.entities.Usuario;
 import com.rally.backend_rally.entities.Voto;
+import com.rally.backend_rally.entities.VotoRanking;
 import com.rally.backend_rally.excepciones.UsuarioNoEncontradoException;
 import com.rally.backend_rally.excepciones.VotoNoEncontradoException;
 import com.rally.backend_rally.repositories.VotoRepository;
@@ -77,5 +79,16 @@ public class VotoService {
 			throw new VotoNoEncontradoException();
 		}
 		
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public List<VotoRanking> obtenerVotosPorFecha() {
+	    List<Object[]> resultados = votoRepository.contarVotosPorFecha();
+	    return resultados.stream()
+	    		.map(obj -> new VotoRanking(((java.sql.Date) obj[0]).toLocalDate(), ((Number) obj[1]).intValue()))
+	        .collect(Collectors.toList());
 	}
 }

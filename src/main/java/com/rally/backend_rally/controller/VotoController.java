@@ -3,6 +3,7 @@ package com.rally.backend_rally.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rally.backend_rally.entities.Voto;
+import com.rally.backend_rally.entities.VotoRanking;
 import com.rally.backend_rally.services.VotoService;
 
 
@@ -56,6 +58,15 @@ public class VotoController  {
     @DeleteMapping("/{votoId}")
     public void eliminarVoto(@PathVariable Long votoId) {
     	votoService.deleteVoto(votoId);
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    @GetMapping("/votosRanking")
+    public ResponseEntity<List<VotoRanking>> votosPorFecha() {
+        return ResponseEntity.ok(votoService.obtenerVotosPorFecha());
     }
     
     

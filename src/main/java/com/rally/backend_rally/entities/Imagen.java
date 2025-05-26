@@ -50,15 +50,20 @@ public class Imagen {
     
     // Relación n:1 con Entidad Categoria
     @ManyToOne
-    @JoinColumn(name = "categoria_id", nullable = false)// Clave foránea
+    @JoinColumn(name = "categoria_id", nullable = false)// Clave foránea. No puede ser null
     private Categoria categoria; 
 
     // Relación n:1 con Entidad Usuario
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)// Clave foránea
+    @JoinColumn(name = "usuario_id", nullable = false)// Clave foránea. No puede ser null
     private Usuario usuario;
 
-    // Relación 1:n con entidad Voto
+    /**
+     * Relación 1:n con entidad Voto.
+     * mappedBy=la clave foránea está en la entidad Voto.
+     * CascadeType.ALL=las operaciones de imagen se propagan a sus Votos. Por ejemplo, si elimino imagen, se eliminan sus votos.
+     * orphanRemoval= si se elimina un voto, se elimina también de la bbdd.
+     */
     @OneToMany(mappedBy = "imagen", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Voto> votos = new ArrayList<>(); 

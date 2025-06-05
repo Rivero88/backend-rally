@@ -64,6 +64,15 @@ spring.servlet.multipart.max-file-size=10MB
 spring.servlet.multipart.max-request-size=10MB
 server.port=${PORT:8080}
 ```
+---
+## 🖥️ Despliegue
+1.Sube tu código a GitHub.
+
+2.En https://railway.app, crea un nuevo proyecto.
+
+3.Importa tu repositorio.
+
+4.Añade variables de entorno a los valores de application.properties:
 Para el despliegue:
 #### application.properties local
 ```properties local
@@ -80,8 +89,10 @@ spring.datasource.username=USUARIO
 spring.datasource.password=CONTRASEÑA
 ruta.fotografias=RUTA
 ```
----
 
+5.Railway te dará la URL del backend.
+
+---
 ## 🔧 Uso
 
 Los endpoints REST están accesibles en:

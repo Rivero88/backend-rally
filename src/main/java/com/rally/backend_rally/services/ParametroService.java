@@ -43,12 +43,22 @@ public class ParametroService {
 		}
 	}
 	
+	/**
+	 *  Para el inicializador
+	 * @param temaRally
+	 * @return
+	 */
 	public Parametro findByTema(String temaRally) {
 		Optional<Parametro> parametroOptional = parametroRepository.findByTema(temaRally);
 		return parametroOptional.isPresent() ? parametroOptional.get() : new Parametro();
 		
 	}
 	
+	/**
+	 * Para el inicializador
+	 * @param parametroNuevo
+	 * @return
+	 */
 	public Parametro guardar(Parametro parametroNuevo) {
 		return parametroRepository.save(parametroNuevo);
 	}
